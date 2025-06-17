@@ -1,0 +1,47 @@
+﻿using Microsoft.EntityFrameworkCore;
+using RentEase.Domain;
+using RentEase.Domain.Common;
+
+namespace RentEase.Infrastructure.Persistence
+{
+    public class RentEaseDbContext : DbContext
+    {
+        public RentEaseDbContext(DbContextOptions<RentEaseDbContext> options) : base(options)
+        {
+
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in ChangeTracker.Entries<BaseDomainModel>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedDate = DateTime.UtcNow;
+                        entry.Entity.CreatedBy = "System";
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.LastModifiedDate = DateTime.UtcNow;
+                        entry.Entity.LastModifiedBy = "System";
+                        break;
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Car>()
+                .HasMany(c => c.Services)
+                .WithOne(s => s.Car)
+                .HasForeignKey(s => s.CarId);
+            modelBuilder.Entity<Rental>().HasKey(r => new { r.CarId, r.CustomerId });
+        }
+
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Rental> Rentals { get; set; }
+        public DbSet<Service> Services { get; set; }
+    }
+}
