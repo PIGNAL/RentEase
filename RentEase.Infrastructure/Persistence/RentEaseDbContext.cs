@@ -25,6 +25,12 @@ namespace RentEase.Infrastructure.Persistence
                         entry.Entity.LastModifiedDate = DateTime.UtcNow;
                         entry.Entity.LastModifiedBy = "System";
                         break;
+                    case EntityState.Deleted:
+                        entry.Entity.IsDeleted = true;
+                        entry.Entity.DeletedDate = DateTime.UtcNow;
+                        entry.Entity.DeletedBy = "System";
+                        entry.State = EntityState.Modified;
+                        break;
                 }
             }
             return base.SaveChangesAsync(cancellationToken);
