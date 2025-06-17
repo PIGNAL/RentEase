@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RentEase.Application.Contracts.Infrastructure;
 using RentEase.Application.Contracts.Persistence;
+using RentEase.Application.Models;
+using RentEase.Infrastructure.Email;
 using RentEase.Infrastructure.Persistence;
 using RentEase.Infrastructure.Repositories;
 
@@ -17,6 +20,9 @@ namespace RentEase.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 
+
+            services.Configure<EmailSettings>(c => configuration.GetSection("EmailSettings"));
+            services.AddTransient<IEmailService, EmailService>();
             return services;
         }
     }
