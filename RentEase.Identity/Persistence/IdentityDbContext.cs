@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using RentEase.Identity.Configurations;
 using RentEase.Identity.Models;
 
-namespace RentEase.Identity
+namespace RentEase.Identity.Persistence
 {
     public class IdentityDbContext : IdentityDbContext<ApplicationUser>
     {

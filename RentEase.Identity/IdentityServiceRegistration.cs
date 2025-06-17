@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using RentEase.Application.Contracts.Identity;
 using RentEase.Application.Models.Identity;
 using RentEase.Identity.Models;
+using RentEase.Identity.Persistence;
 using RentEase.Identity.Services;
 
 namespace RentEase.Identity
