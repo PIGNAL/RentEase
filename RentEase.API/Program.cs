@@ -1,4 +1,5 @@
 
+using RentEase.Application;
 using RentEase.Identity;
 using RentEase.Infrastructure;
 
@@ -13,6 +14,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddApplicationServices();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
