@@ -2,12 +2,12 @@
 
 namespace RentEase.Application.Features.Car.Commands
 {
-    public class UpdateCarCommand: IRequest<bool>
+    public class UpdateCarCommand : IRequest<bool>
     {
-        public UpdateCarCommand(string model, int id, string type)
+        public UpdateCarCommand(int id, string model, string type)
         {
-            Model = model;
             Id = id;
+            Model = model;
             Type = type;
         }
 
