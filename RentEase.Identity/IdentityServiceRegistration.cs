@@ -1,15 +1,16 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using RentEase.Application.Contracts;
 using RentEase.Application.Contracts.Identity;
 using RentEase.Application.Models.Identity;
 using RentEase.Identity.Models;
 using RentEase.Identity.Persistence;
 using RentEase.Identity.Services;
+using System.Text;
 
 namespace RentEase.Identity
 {
@@ -27,6 +28,7 @@ namespace RentEase.Identity
                 .AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
            
             services.AddTransient<IAuthService, AuthService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             services.AddAuthentication(options =>
             {

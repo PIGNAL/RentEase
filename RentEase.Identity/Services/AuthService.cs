@@ -100,9 +100,11 @@ namespace RentEase.Identity.Services
 
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, user.UserName),
-                new(JwtRegisteredClaimNames.Email, user.Email),
-                new(CustomClaimTypes.Uid, user.Id)
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.Email, user.Email),
+                new(CustomClaimTypes.Uid, user.Id),
+                new(ClaimTypes.StreetAddress,user.Address),
+                new(ClaimTypes.GivenName, user.FullName)
             }.Union(userClaims).Union(roleClaims);
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
