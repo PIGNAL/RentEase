@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using RentEase.Application.Contracts;
 using RentEase.Application.Features.Car.Commands;
+using RentEase.Application.Features.Rent.Commands;
 using RentEase.Domain;
 
 namespace RentEase.Application.Mappings
@@ -9,6 +11,9 @@ namespace RentEase.Application.Mappings
         public MappingProfile()
         {
             CreateMap<CreateCarCommand, Car>();
+            CreateMap<UpdateCarCommand, Car>();
+            CreateMap<RegisterRentalCommand, Rental>();
+            CreateMap<ICurrentUserService, Customer>();
         }
     }
 }
