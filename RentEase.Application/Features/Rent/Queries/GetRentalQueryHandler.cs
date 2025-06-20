@@ -20,9 +20,9 @@ namespace RentEase.Application.Features.Rent.Queries
         {
             var rentalEntity = await _unitOfWork.Repository<Rental>()
                 .GetAsync(r => r.Id == request.Id, r => r.Car);
-            if (rentalEntity == null)
+            if (rentalEntity.Count == 0)
             {
-                throw new Exception("Rental not found.");
+                return null;
             }
             return _mapper.Map<RentalDto>(rentalEntity[0]);
         }

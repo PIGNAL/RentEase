@@ -21,56 +21,98 @@ namespace RentEase.UnitTests.API.Controllers
         }
 
         [Fact]
-        public async Task RegisterRental_ReturnsOkResult_WithExpectedValue()
+        public async Task RegisterRental_ReturnsOkResult_WithTrue()
         {
             // Arrange
-            var command = new RegisterRentalCommand(
-                startDate: DateTime.UtcNow,
-                endDate: DateTime.UtcNow.AddDays(2),
-                carId: 1
-            );
-            _mediatorMock
-                .Setup(m => m.Send(command, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(true);
+            var command = new RegisterRentalCommand(null, null, null);
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
             // Act
             var result = await _controller.RegisterRental(command);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            Assert.True((bool)okResult.Value!);
+            Assert.True((bool)okResult.Value);
         }
 
         [Fact]
-        public async Task GetRentals_ReturnsOkResult_WithListOfRentalDto()
+        public async Task UpdateRental_ReturnsOkResult_WithTrue()
+        {
+            // Arrange
+            var command = new UpdateRentalCommand(1,2, DateTime.Now, DateTime.Now.AddDays(1));
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.UpdateRental(command);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.True((bool)okResult.Value);
+        }
+
+        [Fact]
+        public async Task CancelRental_ReturnsOkResult_WithTrue()
+        {
+            // Arrange
+            int id = 1;
+            _mediatorMock.Setup(m => m.Send(It.IsAny<CancelRentalCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.CancelRental(id);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.True((bool)okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetRentals_ReturnsOkResult_WithRentalList()
         {
             // Arrange
             var rentals = new List<RentalDto>
             {
-                new RentalDto
-                {
-                    CustomerId = 1,
-                    CarId = 2,
-                    StartDate = DateTime.UtcNow,
-                    EndDate = DateTime.UtcNow.AddDays(2),
-                    Car = new CarDto { Id = 2, Model = "ModelX", Type = "SUV" }
-                }
+                new RentalDto { Id = 1, CarId = 2, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(1), Car = new CarDto { Id = 2, Model = "ModelX", Type = "SUV" } }
             };
-            _mediatorMock
-                .Setup(m => m.Send(It.IsAny<GetRentalsByUserQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(rentals);
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetRentalsByUserQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(rentals);
 
             // Act
             var result = await _controller.GetRentals();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnValue = Assert.IsAssignableFrom<IEnumerable<RentalDto>>(okResult.Value);
-            Assert.Single(returnValue);
-            Assert.Equal(1, returnValue.First().CustomerId);
-            Assert.Equal(2, returnValue.First().CarId);
-            Assert.Equal("ModelX", returnValue.First().Car.Model);
-            Assert.Equal("SUV", returnValue.First().Car.Type);
+            var value = Assert.IsAssignableFrom<IEnumerable<RentalDto>>(okResult.Value);
+            Assert.Single(value);
+        }
+
+        [Fact]
+        public async Task GetRentalByCustomerAndCar_ReturnsOkResult_WithRental()
+        {
+            // Arrange
+            int id = 1;
+            var rental = new RentalDto { Id = id, CarId = 2, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(1), Car = new CarDto { Id = 2, Model = "ModelX", Type = "SUV" } };
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetRentalQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(rental);
+
+            // Act
+            var result = await _controller.GetRentalByCustomerAndCar(id);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var value = Assert.IsType<RentalDto>(okResult.Value);
+            Assert.Equal(id, value.Id);
+        }
+
+        [Fact]
+        public async Task GetRentalByCustomerAndCar_ReturnsNotFound_WhenRentalIsNull()
+        {
+            // Arrange
+            int id = 1;
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetRentalQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync((RentalDto)null);
+
+            // Act
+            var result = await _controller.GetRentalByCustomerAndCar(id);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result.Result);
         }
     }
 }

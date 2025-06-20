@@ -4,7 +4,7 @@ namespace RentEase.Application.Features.Rent.Commands
 {
     public class UpdateRentalCommand: IRequest<bool>
     {
-        public UpdateRentalCommand(int id, DateTime startDate, DateTime endDate, int carId)
+        public UpdateRentalCommand(int id, int carId, DateTime startDate, DateTime endDate)
         {
             Id = id;
             StartDate = startDate;

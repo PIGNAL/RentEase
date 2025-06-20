@@ -18,7 +18,7 @@ namespace RentEase.Application.Features.Rent.Commands
             var rentalEntity = await _unitOfWork.Repository<Rental>().GetByIdAsync(request.Id);
             if (rentalEntity == null)
             {
-                throw new Exception("Rental not found.");
+                return false;
             }
             _unitOfWork.Repository<Rental>().DeleteEntity(rentalEntity);
             var result = await _unitOfWork.Complete();

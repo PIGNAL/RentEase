@@ -8,7 +8,7 @@ using RentEase.Domain;
 
 namespace RentEase.Application.Features.Rent.Commands
 {
-    public class UpdateRentalCommandHandler :IRequestHandler<UpdateRentalCommand,bool>
+    public class UpdateRentalCommandHandler : IRequestHandler<UpdateRentalCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ namespace RentEase.Application.Features.Rent.Commands
         {
             var rentalEntity = await _unitOfWork.Repository<Rental>()
                 .GetAsync(r => r.Id == request.Id && !r.IsDeleted, r => r.Car);
-            if (rentalEntity == null)
+            if (rentalEntity.Count == 0)
             {
                 throw new Exception("Rental not found.");
             }

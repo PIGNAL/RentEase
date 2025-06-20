@@ -93,7 +93,7 @@ public class AuthServiceTests
         var request = new AuthRequest { Email = user.Email, Password = "wrongpassword" };
         _userManagerMock.Setup(x => x.FindByEmailAsync(user.Email)).ReturnsAsync(user);
         _signInManagerMock.Setup(x => x.PasswordSignInAsync(user.UserName, request.Password, false, false))
-            .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
+            .ReturnsAsync(SignInResult.Failed);
 
         // Act & Assert
         var ex = await Assert.ThrowsAsync<Exception>(() => _authService.LoginAsync(request));
