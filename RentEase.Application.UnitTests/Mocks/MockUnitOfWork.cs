@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using RentEase.Application.Contracts;
-using RentEase.Application.Contracts.Persistence;
 using RentEase.Infrastructure.Persistence;
 using RentEase.Infrastructure.Repositories;
 
-namespace RentEase.Application.UnitTests.Mocks
+namespace RentEase.UnitTests.Mocks
 {
     public static class MockUnitOfWork
     {

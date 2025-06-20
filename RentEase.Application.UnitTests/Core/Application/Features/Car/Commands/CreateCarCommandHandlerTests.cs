@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Moq;
 using RentEase.Application.Features.Car.Commands;
-using RentEase.Application.UnitTests.Mocks;
 using RentEase.Infrastructure.Repositories;
 using RentEase.Application.Mappings;
+using RentEase.UnitTests.Mocks;
 using Shouldly;
 using Xunit;
 

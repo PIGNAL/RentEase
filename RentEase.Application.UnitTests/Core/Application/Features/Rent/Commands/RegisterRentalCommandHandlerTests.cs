@@ -5,12 +5,12 @@ using RentEase.Application.Contracts;
 using RentEase.Application.Contracts.Infrastructure;
 using RentEase.Application.Features.Rent.Commands;
 using RentEase.Application.Mappings;
-using RentEase.Application.UnitTests.Mocks;
 using RentEase.Infrastructure.Repositories;
+using RentEase.UnitTests.Mocks;
 using Shouldly;
 using Xunit;
 
-namespace RentEase.UnitTests.Core.Application.Features.Rent
+namespace RentEase.UnitTests.Core.Application.Features.Rent.Commands
 {
     public class RegisterRentalCommandHandlerTests
     {

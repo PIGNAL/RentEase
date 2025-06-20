@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
-using RentEase.Infrastructure.Persistence;
 using RentEase.Domain;
+using RentEase.Infrastructure.Persistence;
 
-namespace RentEase.Application.UnitTests.Mocks
+namespace RentEase.UnitTests.Mocks
 {
     public static class MockCarRepository
     {

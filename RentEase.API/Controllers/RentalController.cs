@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentEase.Application.Features.Rent.Commands;
+using RentEase.Application.Features.Rent.Queries;
+using RentEase.Application.Models;
 
 namespace RentEase.API.Controllers
 {
 
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class RentalController : ControllerBase
     {
@@ -18,11 +21,45 @@ namespace RentEase.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult<bool>> RegisterRental([FromBody] RegisterRentalCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+
+        [HttpPut]
+        public async Task<ActionResult<bool>> UpdateRental([FromBody] UpdateRentalCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<bool>> CancelRental([FromBody] CancelRentalCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RentalDto>>> GetRentals()
+        {
+            var query = new GetRentalsByUserQuery();
+            var rentals = await _mediator.Send(query);
+            return Ok(rentals);
+        }
+
+        [HttpGet("{customerId:int}/{carId:int}")]
+        public async Task<ActionResult<RentalDto>> GetRentalByCustomerAndCar(int customerId, int carId)
+        {
+            var query = new GetRentalByCustomerAndCarQuery(customerId, carId);
+            var rental = await _mediator.Send(query);
+            if (rental == null)
+            {
+                return NotFound();
+            }
+            return Ok(rental);
+        }
+
     }
 }

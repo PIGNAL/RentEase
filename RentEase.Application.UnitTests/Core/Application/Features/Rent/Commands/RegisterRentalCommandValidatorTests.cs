@@ -1,7 +1,7 @@
 ﻿using RentEase.Application.Features.Rent.Commands;
 using Xunit;
 
-namespace RentEase.UnitTests.Core.Application.Features.Rent
+namespace RentEase.UnitTests.Core.Application.Features.Rent.Commands
 {
     public class RegisterRentalCommandValidatorTests
     {

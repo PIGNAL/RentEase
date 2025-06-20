@@ -25,6 +25,13 @@ namespace RentEase.Infrastructure.Repositories
             return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
+        public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            var query = _context.Set<T>().Where(predicate);
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+            return await query.ToListAsync();
+        }
+
 
         public async Task<T?> GetByIdAsync(int id)
         {

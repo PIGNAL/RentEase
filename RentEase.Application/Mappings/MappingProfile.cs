@@ -14,7 +14,9 @@ namespace RentEase.Application.Mappings
             CreateMap<CreateCarCommand, Car>();
             CreateMap<UpdateCarCommand, Car>();
             CreateMap<Car, CarDto>();
+            CreateMap<UpdateRentalCommand, Rental>();
             CreateMap<RegisterRentalCommand, Rental>();
+            CreateMap<Rental, RentalDto>();
             CreateMap<ICurrentUserService, Customer>();
         }
     }

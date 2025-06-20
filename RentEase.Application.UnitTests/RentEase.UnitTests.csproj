@@ -27,4 +27,8 @@
     <ProjectReference Include="..\RentEase.Infrastructure\RentEase.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Application\Features\Rent\Queries\" />
+  </ItemGroup>
+
 </Project>
