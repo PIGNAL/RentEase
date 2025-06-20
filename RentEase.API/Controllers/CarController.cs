@@ -60,5 +60,15 @@ namespace RentEase.API.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+        [HttpGet("available")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<CarDto>>> GetAvailableCars([FromQuery] DateTime startDate,
+            [FromQuery] DateTime endDate)
+        {
+            var query = new GetAvailableCarsQuery(startDate, endDate);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
     }
 }

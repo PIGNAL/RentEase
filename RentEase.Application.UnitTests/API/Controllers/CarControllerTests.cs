@@ -110,5 +110,59 @@ namespace RentEase.UnitTests.API.Controllers
             var returnedCars = Assert.IsType<List<CarDto>>(okResult.Value);
             Assert.Equal(carDtos.Count, returnedCars.Count);
         }
+
+        [Fact]
+        public async Task GetAllCars_ReturnsEmptyList_WhenNoCarsAvailable()
+        {
+            // Arrange
+            var mediatorMock = new Mock<IMediator>();
+            mediatorMock
+                .Setup(m => m.Send(It.IsAny<GetAllCarsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<CarDto>());
+            var controller = new CarController(mediatorMock.Object);
+            // Act
+            var result = await controller.GetAllCars();
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedCars = Assert.IsType<List<CarDto>>(okResult.Value);
+            Assert.Empty(returnedCars);
+        }
+
+        [Fact]
+        public async Task GetAvailableCars_ReturnsOkResult_WithListOfCarDto()
+        {
+            // Arrange
+            var startDate = new DateTime(2024, 7, 1);
+            var endDate = new DateTime(2024, 7, 10);
+            var cars = new List<CarDto>
+            {
+                new CarDto { Id = 1, Model = "ModelX", Type = "SUV" },
+                new CarDto { Id = 2, Model = "ModelY", Type = "Sedan" }
+            };
+
+            _mediatorMock
+                .Setup(m => m.Send(It.Is<GetAvailableCarsQuery>(q => q.StartDate == startDate && q.EndDate == endDate), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(cars);
+
+            // Act
+            var result = await _controller.GetAvailableCars(startDate, endDate);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedCars = Assert.IsAssignableFrom<IEnumerable<CarDto>>(okResult.Value);
+            Assert.Collection(returnedCars,
+                car =>
+                {
+                    Assert.Equal(1, car.Id);
+                    Assert.Equal("ModelX", car.Model);
+                    Assert.Equal("SUV", car.Type);
+                },
+                car =>
+                {
+                    Assert.Equal(2, car.Id);
+                    Assert.Equal("ModelY", car.Model);
+                    Assert.Equal("Sedan", car.Type);
+                });
+        }
     }
 }

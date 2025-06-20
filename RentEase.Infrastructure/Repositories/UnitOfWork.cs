@@ -10,6 +10,9 @@ namespace RentEase.Infrastructure.Repositories
     {
         private Hashtable _repositories;
         private readonly RentEaseDbContext _context;
+        private ICarRepository _carRepository;
+
+        public ICarRepository CarRepository => _carRepository ??= new CarRepository(_context);
 
         public UnitOfWork(RentEaseDbContext context)
         {
