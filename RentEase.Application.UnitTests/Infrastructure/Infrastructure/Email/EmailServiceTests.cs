@@ -21,7 +21,7 @@ namespace RentEase.UnitTests.Infrastructure.Infrastructure.Email
             _settings = new EmailSettings
             {
                 FromAddress= "joni_ballatore@hotmail.com",
-                ApiKey= "test",
+                ApiKey= "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",
                 FromName= "Jonathan Ballatore"
             };
             _mockOptions = new Mock<IOptions<EmailSettings>>();
