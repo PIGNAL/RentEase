@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RentEase.API.Controllers;
 using RentEase.Application.Features.Car.Commands;
-using RentEase.Application.Features.Car.Queries;
-using RentEase.Application.Models;
 using Xunit;
 
 namespace RentEase.UnitTests.API.Controllers
