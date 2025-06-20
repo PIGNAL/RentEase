@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentEase.Application.Features.Car.Commands;
+using RentEase.Application.Features.Car.Queries;
+using RentEase.Application.Models;
 
 namespace RentEase.API.Controllers
 {
@@ -38,6 +40,24 @@ namespace RentEase.API.Controllers
         {
             var command = new DeleteCarCommand(id);
             var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<CarDto>> GetCarById(int id)
+        {
+            var query = new GetCarQuery(id);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<CarDto>>> GetAllCars()
+        {
+            var query = new GetAllCarsQuery();
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
     }

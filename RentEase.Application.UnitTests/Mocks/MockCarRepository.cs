@@ -20,6 +20,20 @@ namespace RentEase.Application.UnitTests.Mocks
                 .Create()
             );
 
+            cars.Add(fixture.Build<Car>()
+                .With(tr => tr.Id, 8002)
+                .With(tr => tr.Model, "Toyota Etios")
+                .With(tr => tr.Type, "Sedan")
+                .Create()
+            );
+
+            cars.Add(fixture.Build<Car>()
+                .With(tr => tr.Id, 8003)
+                .With(tr => tr.Model, "Toyota Yaris")
+                .With(tr => tr.Type, "Sedan")
+                .Create()
+            );
+
             rentEaseDbContextFake.Cars!.AddRange(cars);
             rentEaseDbContextFake.SaveChanges();
         }

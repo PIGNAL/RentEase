@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RentEase.API.Controllers;
 using RentEase.Application.Features.Car.Commands;
+using RentEase.Application.Features.Car.Queries;
+using RentEase.Application.Models;
 using Xunit;
 
 namespace RentEase.UnitTests.API.Controllers
@@ -61,6 +63,52 @@ namespace RentEase.UnitTests.API.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             Assert.True((bool)okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetCarById_ReturnsOkResult_WithCarDto()
+        {
+            // Arrange
+            var mediatorMock = new Mock<IMediator>();
+            var carId = 1;
+            var carDto = new CarDto { Id = carId, Model = "ModelX", Type = "SUV" };
+            mediatorMock
+                .Setup(m => m.Send(It.Is<GetCarQuery>(q => q.Id == carId), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(carDto);
+
+            var controller = new CarController(mediatorMock.Object);
+
+            // Act
+            var result = await controller.GetCarById(carId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedCar = Assert.IsType<CarDto>(okResult.Value);
+            Assert.Equal(carDto.Id, returnedCar.Id);
+            Assert.Equal(carDto.Model, returnedCar.Model);
+            Assert.Equal(carDto.Type, returnedCar.Type);
+        }
+
+        [Fact]
+        public async Task GetAllCars_ReturnsOkResult_WithListOfCarDto()
+        {
+            // Arrange
+            var mediatorMock = new Mock<IMediator>();
+            var carDtos = new List<CarDto>
+            {
+                new CarDto { Id = 1, Model = "ModelX", Type = "SUV" },
+                new CarDto { Id = 2, Model = "ModelY", Type = "Sedan" }
+            };
+            mediatorMock
+                .Setup(m => m.Send(It.IsAny<GetAllCarsQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(carDtos);
+            var controller = new CarController(mediatorMock.Object);
+            // Act
+            var result = await controller.GetAllCars();
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnedCars = Assert.IsType<List<CarDto>>(okResult.Value);
+            Assert.Equal(carDtos.Count, returnedCars.Count);
         }
     }
 }
