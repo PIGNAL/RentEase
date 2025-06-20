@@ -4,13 +4,11 @@ namespace RentEase.Application.Features.Rent.Commands
 {
     public class CancelRentalCommand : IRequest<bool>
     {
-        public CancelRentalCommand(int customerId, int carId)
+        public CancelRentalCommand(int id)
         {
-            CustomerId = customerId;
-            CarId = carId;
+            Id = id;
         }
 
-        public int CustomerId { get; set; }
-        public int CarId { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -44,7 +44,6 @@ namespace RentEase.Infrastructure.Persistence
                 .HasMany(c => c.Services)
                 .WithOne(s => s.Car)
                 .HasForeignKey(s => s.CarId);
-            modelBuilder.Entity<Rental>().HasKey(r => new { r.CarId, r.CustomerId });
         }
 
         public DbSet<Car> Cars { get; set; }

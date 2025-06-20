@@ -34,9 +34,10 @@ namespace RentEase.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<bool>> CancelRental([FromBody] CancelRentalCommand command)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> CancelRental(int id)
         {
+            var command = new CancelRentalCommand(id);
             var result = await _mediator.Send(command);
             return Ok(result);
         }
@@ -49,10 +50,10 @@ namespace RentEase.API.Controllers
             return Ok(rentals);
         }
 
-        [HttpGet("{customerId:int}/{carId:int}")]
-        public async Task<ActionResult<RentalDto>> GetRentalByCustomerAndCar(int customerId, int carId)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<RentalDto>> GetRentalByCustomerAndCar(int id)
         {
-            var query = new GetRentalByCustomerAndCarQuery(customerId, carId);
+            var query = new GetRentalQuery(id);
             var rental = await _mediator.Send(query);
             if (rental == null)
             {

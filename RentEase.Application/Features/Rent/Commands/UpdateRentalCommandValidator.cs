@@ -6,6 +6,9 @@ namespace RentEase.Application.Features.Rent.Commands
     {
         public UpdateRentalCommandValidator()
         {
+
+            RuleFor(x => x.Id).GreaterThan(0).WithMessage("Id must be greater than 0.");
+
             RuleFor(x => x.StartDate)
                 .LessThan(x => x.EndDate)
                 .WithMessage("Start date must be before end date.");

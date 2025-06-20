@@ -12,8 +12,8 @@ using RentEase.Infrastructure.Persistence;
 namespace RentEase.Infrastructure.Migrations
 {
     [DbContext(typeof(RentEaseDbContext))]
-    [Migration("20250617132211_initialDataBase")]
-    partial class initialDataBase
+    [Migration("20250620162044_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,6 +88,9 @@ namespace RentEase.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
@@ -107,10 +110,13 @@ namespace RentEase.Infrastructure.Migrations
 
             modelBuilder.Entity("RentEase.Domain.Rental", b =>
                 {
-                    b.Property<int>("CarId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -118,6 +124,9 @@ namespace RentEase.Infrastructure.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
@@ -127,9 +136,6 @@ namespace RentEase.Infrastructure.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -143,7 +149,9 @@ namespace RentEase.Infrastructure.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CarId", "CustomerId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.HasIndex("CustomerId");
 

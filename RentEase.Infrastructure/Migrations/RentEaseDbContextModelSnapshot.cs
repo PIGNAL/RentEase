@@ -107,10 +107,13 @@ namespace RentEase.Infrastructure.Migrations
 
             modelBuilder.Entity("RentEase.Domain.Rental", b =>
                 {
-                    b.Property<int>("CarId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -118,6 +121,9 @@ namespace RentEase.Infrastructure.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
@@ -127,9 +133,6 @@ namespace RentEase.Infrastructure.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -143,9 +146,11 @@ namespace RentEase.Infrastructure.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CarId", "CustomerId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("Rentals");
                 });
@@ -202,7 +207,7 @@ namespace RentEase.Infrastructure.Migrations
 
                     b.HasOne("RentEase.Domain.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

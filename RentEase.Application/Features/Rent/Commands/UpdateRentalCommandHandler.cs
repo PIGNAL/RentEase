@@ -25,7 +25,7 @@ namespace RentEase.Application.Features.Rent.Commands
         public async Task<bool> Handle(UpdateRentalCommand request, CancellationToken cancellationToken)
         {
             var rentalEntity = await _unitOfWork.Repository<Rental>()
-                .GetAsync(r => r.CarId == request.CarId && r.Customer.Email == _currentUserService.Email, r => r.Car);
+                .GetAsync(r => r.Id == request.Id && !r.IsDeleted, r => r.Car);
             if (rentalEntity == null)
             {
                 throw new Exception("Rental not found.");

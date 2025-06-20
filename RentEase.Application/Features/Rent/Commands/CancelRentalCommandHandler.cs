@@ -15,13 +15,12 @@ namespace RentEase.Application.Features.Rent.Commands
 
         public async Task<bool> Handle(CancelRentalCommand request, CancellationToken cancellationToken)
         {
-            var rentalEntity = await _unitOfWork.Repository<Rental>()
-                .GetAsync(r => r.CarId == request.CarId && r.CustomerId == request.CustomerId, r => r.Car);
+            var rentalEntity = await _unitOfWork.Repository<Rental>().GetByIdAsync(request.Id);
             if (rentalEntity == null)
             {
                 throw new Exception("Rental not found.");
             }
-            _unitOfWork.Repository<Rental>().DeleteEntity(rentalEntity[0]);
+            _unitOfWork.Repository<Rental>().DeleteEntity(rentalEntity);
             var result = await _unitOfWork.Complete();
             return result > 0;
         }

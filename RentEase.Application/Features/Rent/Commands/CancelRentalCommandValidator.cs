@@ -6,8 +6,7 @@ namespace RentEase.Application.Features.Rent.Commands
     {
         public CancelRentalCommandValidator()
         {
-            RuleFor(r => r.CarId).NotNull().NotEmpty().WithMessage("Car ID is required.");
-            RuleFor(r => r.CustomerId).NotNull().NotEmpty().WithMessage("Customer ID is required.");
+            RuleFor(x => x.Id).GreaterThan(0).WithMessage("Id must be greater than 0.");
         }
     }
 }
