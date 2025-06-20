@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentEase.Application.Features.Car.Commands;
+using RentEase.Application.Features.Car.Queries;
+using RentEase.Application.Models;
 
 namespace RentEase.API.Controllers
 {
