@@ -2,7 +2,7 @@
 {
     public class CarMaintenanceScheduler
     {
-        public IEnumerable<Service> GenerateScheduledServices(Car car, DateTime from, DateTime to)
+        public virtual IEnumerable<Service> GenerateScheduledServices(Car car, DateTime from, DateTime to)
         {
             var services = new List<Service>();
             var current = from;

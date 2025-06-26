@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Moq;
+using RentEase.Application.Contracts;
 using RentEase.Application.Features.Car.Commands;
 using RentEase.Infrastructure.Repositories;
 using RentEase.Application.Mappings;
@@ -13,6 +14,7 @@ namespace RentEase.UnitTests.Core.Application.Features.Car.Commands
     {
         private readonly IMapper _mapper;
         private readonly Mock<UnitOfWork> _unitOfWorkMock;
+        private readonly Mock<ICarMaintenanceService> _carMaintenanceServiceMock;
 
         public CreateCarCommandHandlerTests()
         {
@@ -24,13 +26,15 @@ namespace RentEase.UnitTests.Core.Application.Features.Car.Commands
             });
             _mapper = mapperConfig.CreateMapper();
 
+            _carMaintenanceServiceMock = new Mock<ICarMaintenanceService>();
+
         }
 
         [Fact]
         public async Task CreateCarCommand_InputCar_ReturnsNumber()
         {
             // Arrange
-            var handler = new CreateCarCommandHandler(_unitOfWorkMock.Object, _mapper);
+            var handler = new CreateCarCommandHandler(_unitOfWorkMock.Object, _mapper, _carMaintenanceServiceMock.Object);
             var command = new CreateCarCommand("Toyota", "Sedan");
             // Act
             var result = await handler.Handle(command, CancellationToken.None);
