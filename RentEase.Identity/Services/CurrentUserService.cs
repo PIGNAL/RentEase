@@ -13,37 +13,22 @@ namespace RentEase.Identity.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string UserName
-        {
-            get
-            {
-                var result = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name);
-                return result?.Value??string.Empty;
-            }
-        }
+        public string UserName => GetClaimValue(ClaimTypes.Name);
 
-        public string Email
-        {
-            get
-            {
-                var result = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email);
-                return result?.Value ?? string.Empty;
-            }
-        }
+        public string Email => GetClaimValue(ClaimTypes.Email);
 
-        public string FullName {
-            get
-            {
-                var result = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.GivenName);
-                return result?.Value ?? string.Empty;
-            }
-        }
-        public string Address {
-            get
-            {
-                var result = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.StreetAddress);
-                return result?.Value ?? string.Empty;
-            }
+        public string FullName => GetClaimValue(ClaimTypes.GivenName);
+
+        public string Address => GetClaimValue(ClaimTypes.StreetAddress);
+
+        private string GetClaimValue(string claimType)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            if (httpContext == null || httpContext.User == null)
+                return "System";
+
+            var claim = httpContext.User.FindFirst(claimType);
+            return claim?.Value ?? "System";
         }
     }
 }

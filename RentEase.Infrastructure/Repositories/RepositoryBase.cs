@@ -17,17 +17,17 @@ namespace RentEase.Infrastructure.Repositories
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            return await _context.Set<T>().Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _context.Set<T>().Where(predicate).ToListAsync();
+            return await _context.Set<T>().Where(x => !x.IsDeleted).Where(predicate).ToListAsync();
         }
 
         public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
-            var query = _context.Set<T>().Where(predicate);
+            var query = _context.Set<T>().Where(x => !x.IsDeleted).Where(predicate);
             query = includes.Aggregate(query, (current, include) => current.Include(include));
             return await query.ToListAsync();
         }

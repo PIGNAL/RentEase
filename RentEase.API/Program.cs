@@ -1,5 +1,6 @@
 
 using RentEase.Application;
+using RentEase.Domain.Services;
 using RentEase.Identity;
 using RentEase.Infrastructure;
 
@@ -16,6 +17,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<CarMaintenanceScheduler>();
 
 builder.Services.AddCors(options =>
 {

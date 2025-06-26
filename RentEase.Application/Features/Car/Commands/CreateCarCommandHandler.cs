@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using RentEase.Application.Contracts;
 using RentEase.Application.Contracts.Persistence;
 
 namespace RentEase.Application.Features.Car.Commands
@@ -8,11 +9,13 @@ namespace RentEase.Application.Features.Car.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ICarMaintenanceService _carMaintenanceService;
 
-        public CreateCarCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public CreateCarCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICarMaintenanceService carMaintenanceService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _carMaintenanceService = carMaintenanceService;
         }
 
         public async Task<int> Handle(CreateCarCommand request, CancellationToken cancellationToken)
@@ -25,6 +28,10 @@ namespace RentEase.Application.Features.Car.Commands
 
             if (result > 0)
             {
+                var from = DateTime.UtcNow;
+                var to = from.AddMonths(2);
+                await _carMaintenanceService.ScheduleServicesForCar(carEntity, from, to);
+
                 return carEntity.Id;
             }
 
