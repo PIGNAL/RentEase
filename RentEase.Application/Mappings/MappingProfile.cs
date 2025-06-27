@@ -18,6 +18,12 @@ namespace RentEase.Application.Mappings
             CreateMap<RegisterRentalCommand, Rental>();
             CreateMap<Rental, RentalDto>();
             CreateMap<ICurrentUserService, Customer>();
+            CreateMap<Service, CarServiceDto>()
+                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Car!.Model))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Car!.Type))
+                .ForMember(dest => dest.ServiceDate, opt => opt.MapFrom(src => src.Date));
+
+
         }
     }
 }
